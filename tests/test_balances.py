@@ -49,3 +49,44 @@ def test_four_people():
         rest[s] += a
         rest[r] -= a
     assert all(v == 0 for v in rest.values())
+
+import pytest
+
+from core.models import Expense, Group
+
+
+def make_group():
+    return Group("Trip", ["Yash", "Nishant"])
+
+
+def test_add_member():
+    g = make_group()
+    g.add_member("  Anna ")
+    assert g.members == ["Yash", "Nishant", "Anna"]
+
+
+def test_duplicate_member_raises():
+    g = make_group()
+    with pytest.raises(ValueError):
+        g.add_member("Yash")
+
+
+def test_empty_member_raises():
+    with pytest.raises(ValueError):
+        make_group().add_member("   ")
+
+
+def test_expense_paid_by_non_member_raises():
+    with pytest.raises(ValueError):
+        make_group().add_expense(Expense("Pizza", 1000, "Bob", ["Yash"]))
+
+
+def test_expense_split_with_non_member_raises():
+    with pytest.raises(ValueError):
+        make_group().add_expense(Expense("Pizza", 1000, "Yash", ["Yash", "Bob"]))
+
+
+def test_groups_do_not_share_expenses():
+    g1, g2 = make_group(), make_group()
+    g1.add_expense(Expense("Pizza", 1000, "Yash", ["Yash"]))
+    assert g2.expenses == []

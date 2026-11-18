@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 @dataclass
 class Expense:
@@ -22,3 +22,25 @@ class Expense:
         res = {name: per_person_share for name in self.split_between}
         res[self.split_between[0]] += remainder_share
         return res
+
+
+@dataclass
+class Group:
+    name: str
+    members: list[str]
+    expenses: list[Expense] = field(default_factory=list)
+
+    def add_member(self, name: str)->None:
+        name = name.strip()
+        if not name:
+            raise ValueError("Name cannot be empty.")
+        if name in self.members:
+            raise ValueError(f"{name} already exists.")
+        self.members.append(name)
+
+    def add_expense(self, expense: Expense)->None:
+        if expense.paid_by not in self.members:
+            raise ValueError(f"{expense.paid_by} does not exist in this group.")
+        if not set(expense.split_between) <= set(self.members):
+            raise ValueError("Everyone in the split must be member in this group.")
+        self.expenses.append(expense)

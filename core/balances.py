@@ -13,6 +13,9 @@ def compute_balances(expenses: list[Expense])->dict[str, int]:
 
 def simplify_balances(balances: dict[str, int])->list[tuple[str,str,int]]:
     """Return payment as (from_person, to_person, amount_cents)"""
+    if sum(balances.values())!=0:
+        raise ValueError("Balances must be sum to zero")
+
     group = {p: b for p, b in balances.items() if b != 0}
     res = []
     while len(group)>0:
