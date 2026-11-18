@@ -2,10 +2,6 @@
 
 Split group expenses with friends and settle up with the fewest possible payments.
 
-**Live demo:** <your streamlit link>
-
-![screenshot](screenshot.png)
-
 ## Features
 - Create groups and add members
 - Add expenses with equal splits (cent-exact, no rounding errors)
