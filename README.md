@@ -1,4 +1,5 @@
-# ProSplit 💸
+# ProSplit 
+Link: https://prosplit.streamlit.app/
 
 Split group expenses with friends and settle up with the fewest possible payments.
 
