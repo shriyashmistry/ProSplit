@@ -62,12 +62,12 @@ if submitted:
     amount_cents = round(amount * 100)
     try:
         e = Expense(description, amount_cents, paid_by, split_between, category)
+        group.add_expense(e)
     except ValueError as err:
         st.error(str(err))
     else:
-        expenses.append(e)
-        save_expenses(expenses, DATA_PATH)
-        st.success(f"Successfully added {description} to {paid_by}!")
+        save_group(groups, DATA_PATH)
+        st.success(f"Added {description}!")
 
 # --- Expenses list ---
 st.header("Expenses")
