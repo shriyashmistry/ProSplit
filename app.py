@@ -72,7 +72,10 @@ if submitted:
 # --- Expenses list ---
 st.header("Expenses")
 for e in group.expenses:
-    st.write(f"{e.description} - {e.amount_cents / 100:.2f}€ paid by {e.paid_by}")
+    if e.category == "Settlement":
+        st.write(f"💸 {e.description}: {e.amount_cents / 100:.2f} €")
+    else:
+       st.write(f"{e.description} - {e.amount_cents / 100:.2f}€ paid by {e.paid_by}")
 
 # --- Settle up ---
 st.header("Who pays whom")
@@ -82,3 +85,12 @@ if len(res)==0:
 else:
     for s,r,a in res:
         st.write(f"{s} pays {r} {a/100:.2f} €")
+
+for s, r, a in res:
+    col1, col2 = st.columns([3, 1])
+    col1.write(f"{s} pays {r} {a / 100:.2f} €")
+    if col2.button("Mark as paid", key=f"pay_{s}_{r}"):
+        transaction = Expense(f"{s} paid {r}", a, s, [r], "Settlement")
+        group.add_expense(transaction)
+        save_group(groups, DATA_PATH)
+        st.rerun()
