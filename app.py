@@ -46,7 +46,7 @@ if not group.members:
     st.info("Add members in the sidebar.")
     st.stop()
 
-st.title(f"ProSplit 💸 – {group.name}")
+st.title(f"ProSplit – {group.name}")
 
 #---Add Expense---
 st.header("Add expense")
